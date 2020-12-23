@@ -2,14 +2,37 @@ import XCTest
 @testable import HuffmanCoding
 
 final class HuffmanCodingTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(HuffmanCoding().text, "Hello, World!")
+    static var allTests = [
+        ("testHuffmanEncode", testHuffmanEncode),
+        ("testHuffmanDecode", testHuffmanDecode),
+        ("testHuffmanEncodeAsString_and_Decode", testHuffmanEncodeAsString_and_Decode),
+    ]
+
+    func testHuffmanEncode() {
+        let str = "Huffman"
+        let freq = str.reduce(into: [:]) { ret, c in ret[c, default: 0] += 1 }
+        let huffman = Huffman(freq: freq)
+
+        let (data, size) = huffman.encode(str)
+        XCTAssertEqual(data.count, 3)
+        XCTAssertEqual(size, 18)
     }
 
-    static var allTests = [
-        ("testExample", testExample),
-    ]
+    func testHuffmanDecode() {
+        let str = "Huffman"
+        let freq = str.reduce(into: [:]) { ret, c in ret[c, default: 0] += 1 }
+        let huffman = Huffman(freq: freq)
+
+        let (data, size) = huffman.encode(str)
+        XCTAssertEqual(huffman.decode(bytes: data, size: size), str)
+    }
+
+    func testHuffmanEncodeAsString_and_Decode() {
+        let str = "Huffman"
+        let freq = str.reduce(into: [:]) { ret, c in ret[c, default: 0] += 1 }
+        let huffman = Huffman(freq: freq)
+
+        let code = huffman.encodeAsString(str)
+        XCTAssertEqual(huffman.decode(code), str)
+    }
 }
