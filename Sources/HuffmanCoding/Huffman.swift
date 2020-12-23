@@ -68,8 +68,8 @@ struct Huffman {
     
     private mutating func generateCodec(_ node: Node, code: String) {
         if let c = node.data {
-            codec[c] = code
-            inverseCodec[code] = c
+            codec[c] = !code.isEmpty ? code : "0"
+            inverseCodec[codec[c]!] = c
         } else {
             generateCodec(node.left!, code: code + "0")
             generateCodec(node.right!, code: code + "1")

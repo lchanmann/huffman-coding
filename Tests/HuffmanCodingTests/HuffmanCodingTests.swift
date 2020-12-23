@@ -6,6 +6,7 @@ final class HuffmanCodingTests: XCTestCase {
         ("testHuffmanEncode", testHuffmanEncode),
         ("testHuffmanDecode", testHuffmanDecode),
         ("testHuffmanEncodeAsString_and_Decode", testHuffmanEncodeAsString_and_Decode),
+        ("testHuffmanEncode_singleCharactersString", testHuffmanEncode_singleCharactersString),
     ]
 
     func testHuffmanEncode() {
@@ -34,5 +35,15 @@ final class HuffmanCodingTests: XCTestCase {
 
         let code = huffman.encodeAsString(str)
         XCTAssertEqual(huffman.decode(code), str)
+    }
+
+    func testHuffmanEncode_singleCharactersString() {
+        let str = "AAAAA"
+        let freq = str.reduce(into: [:]) { ret, c in ret[c, default: 0] += 1 }
+        let huffman = Huffman(freq: freq)
+
+        let (data, size) = huffman.encode(str)
+        XCTAssertEqual(huffman.decode(bytes: data, size: size), str)
+        XCTAssertTrue(size / 8 < str.count)
     }
 }
